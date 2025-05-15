@@ -31,6 +31,27 @@ func (c *PatientController) Create(ctx *gin.Context) {
 		return
 	}
 
+	userID, exists := ctx.Get("user_id")
+	if !exists {
+		ctx.JSON(http.StatusInternalServerError, models.Response{
+			Success: false,
+			Error:   "User ID not found in token",
+		})
+		return
+	}
+
+	userIDStr, ok := userID.(string)
+	if !ok {
+		ctx.JSON(http.StatusInternalServerError, models.Response{
+			Success: false,
+			Error:   "Invalid user ID format in token",
+		})
+		return
+	}
+
+	patient.RegisteredBy = &userIDStr
+	patient.LastUpdatedBy = &userIDStr
+
 	if err := patient.Validate(); err != nil {
 		ctx.JSON(http.StatusBadRequest, models.Response{
 			Success: false,
@@ -135,6 +156,26 @@ func (c *PatientController) Update(ctx *gin.Context) {
 		return
 	}
 
+	userID, exists := ctx.Get("user_id")
+	if !exists {
+		ctx.JSON(http.StatusInternalServerError, models.Response{
+			Success: false,
+			Error:   "User ID not found in token",
+		})
+		return
+	}
+
+	userIDStr, ok := userID.(string)
+	if !ok {
+		ctx.JSON(http.StatusInternalServerError, models.Response{
+			Success: false,
+			Error:   "Invalid user ID format in token",
+		})
+		return
+	}
+
+	updateRequest.LastUpdatedBy = &userIDStr
+
 	updateRequest.ID = id
 
 	if updateRequest.Name == "" {
@@ -154,9 +195,6 @@ func (c *PatientController) Update(ctx *gin.Context) {
 	}
 	if updateRequest.RegisteredBy == nil {
 		updateRequest.RegisteredBy = existingPatient.RegisteredBy
-	}
-	if updateRequest.LastUpdatedBy == nil {
-		updateRequest.LastUpdatedBy = existingPatient.LastUpdatedBy
 	}
 	if updateRequest.Meta == nil {
 		updateRequest.Meta = existingPatient.Meta
