@@ -1,0 +1,381 @@
+{
+	"info": {
+		"_postman_id": "cc9da85d-f232-4f27-b0e3-32d383015146",
+		"name": "Makerble",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39713995"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get-users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "b1635737-1dfc-47c5-ace1-1aa323f6f71f",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "doctor_username",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "doctor",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"doctor_username\",\n  \"password\": \"secure123\",\n  \"role\": \"doctor\"\n}\n\n// {\n//   \"username\": \"receptionist_username\",\n//   \"password\": \"secure123\",\n//   \"role\": \"receptionist\"\n// }\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"receptionist\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/api/users?id=b1635737-1dfc-47c5-ace1-1aa323f6f71f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "b1635737-1dfc-47c5-ace1-1aa323f6f71f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/api/users/8d549a9e-ac7b-4f41-9927-939bc484a045",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"users",
+								"8d549a9e-ac7b-4f41-9927-939bc484a045"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"doctor_username\",\n  \"password\": \"secure123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "patient",
+			"item": [
+				{
+					"name": "get-patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDc0MjM0NTAsImlkIjoiN2Q5MTc3ODktN2FhNy00MzMyLWE5NTAtM2YwYzczYzNkZmI5Iiwicm9sZSI6InJlY2VwdGlvbmlzdCJ9.nHf-ANPW8dZkn9auSYDbUYccMYh1g-TQUi_FiYs01zs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/api/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "is_active",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "62648f4d-7619-4ea2-9147-b0eb062e49d0",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "Patient",
+									"disabled": true
+								},
+								{
+									"key": "age",
+									"value": "32",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "male",
+									"disabled": true
+								},
+								{
+									"key": "address",
+									"value": "chandigarh",
+									"disabled": true
+								},
+								{
+									"key": "diagnosis",
+									"value": "hypertension",
+									"disabled": true
+								},
+								{
+									"key": "registered_by",
+									"value": "7d917789-7aa7-4332-a950-3f0c73c3dfb9",
+									"disabled": true
+								},
+								{
+									"key": "last_updated_by",
+									"value": "7d917789-7aa7-4332-a950-3f0c73c3dfb9",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDc0MjcyMTYsImlkIjoiN2Q5MTc3ODktN2FhNy00MzMyLWE5NTAtM2YwYzczYzNkZmI5Iiwicm9sZSI6InJlY2VwdGlvbmlzdCJ9.OOwipzSeYLmJ10juMWn-jPHidXUONI9vTlsH65eKHDM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Patient\",\n  \"age\": 32,\n  \"gender\": \"male\",\n  \"address\": \"chandigarh\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/api/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDc0MjczMzYsImlkIjoiMmMzZWY2NTMtYTg4Ny00YzRkLTg0YzItZDYwYTcyOTVhOTZlIiwicm9sZSI6ImRvY3RvciJ9.Yr8R6_gjkwKS1lALc7KG4x8gK-sax-_x8r0tsdZZ6Ek",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"diagnosis\": \"hypertension\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/api/patients?id=62648f4d-7619-4ea2-9147-b0eb062e49d0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "62648f4d-7619-4ea2-9147-b0eb062e49d0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDc0MjczMzYsImlkIjoiMmMzZWY2NTMtYTg4Ny00YzRkLTg0YzItZDYwYTcyOTVhOTZlIiwicm9sZSI6ImRvY3RvciJ9.Yr8R6_gjkwKS1lALc7KG4x8gK-sax-_x8r0tsdZZ6Ek",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/api/patients/62648f4d-7619-4ea2-9147-b0eb062e49d0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"patients",
+								"62648f4d-7619-4ea2-9147-b0eb062e49d0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
