@@ -10,16 +10,22 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/arjunsaxaena/MakerbleAssignment/patient_service/controller"
 	"github.com/arjunsaxaena/MakerbleAssignment/pkg/database"
-	"github.com/arjunsaxaena/MakerbleAssignment/portal_service/controller"
+	"github.com/arjunsaxaena/MakerbleAssignment/pkg/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 const (
-	PORT = 8001
+	PORT = 8002
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Printf("Warning: .env file not found or error loading: %v", err)
+	}
+
 	database.Connect()
 	defer database.Close()
 
@@ -27,16 +33,17 @@ func main() {
 	router.Use(gin.Recovery())
 	router.Use(gin.Logger())
 
-	authController := controller.NewLoginController()
-	userController := controller.NewUserController()
-	userRoutes := router.Group("/api/users")
+	patientController := controller.NewPatientController()
+	
+	patientRoutes := router.Group("/api/patients")
+	patientRoutes.Use(middleware.AuthMiddleware())
 	{
-		userRoutes.POST("", userController.Create)
-		userRoutes.GET("", userController.Get)
-		userRoutes.PATCH("", userController.Update)
-		userRoutes.DELETE("/:id", userController.Delete)
-
-		userRoutes.POST("/login", authController.Login)
+		patientRoutes.POST("", middleware.RoleAuthorization("receptionist"), patientController.Create)
+		patientRoutes.DELETE("/:id", middleware.RoleAuthorization("receptionist"), patientController.Delete)
+		
+		patientRoutes.PATCH("", middleware.RoleAuthorization("doctor"), patientController.Update)
+		
+		patientRoutes.GET("", middleware.RoleAuthorization("doctor", "receptionist"), patientController.Get)
 	}
 
 	server := &http.Server{
@@ -45,7 +52,7 @@ func main() {
 	}
 
 	go func() {
-		log.Printf("Portal service listening on port %d\n", PORT)
+		log.Printf("Patient service listening on port %d\n", PORT)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Failed to start server: %v\n", err)
 		}
@@ -64,4 +71,4 @@ func main() {
 	}
 
 	log.Println("Server exiting")
-}
+} 

@@ -2,34 +2,39 @@ package controller
 
 import (
 	"net/http"
-	"os"
-	"time"
 
+	"github.com/arjunsaxaena/MakerbleAssignment/pkg/middleware"
 	"github.com/arjunsaxaena/MakerbleAssignment/pkg/models"
 	"github.com/arjunsaxaena/MakerbleAssignment/portal_service/repository"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
-var jwtSecret = os.Getenv("JWT_SECRET")
-
-type AuthController struct {
+type LoginController struct {
 	userRepo repository.UserRepository
 }
 
-func NewAuthController() *AuthController {
-	return &AuthController{
+func NewLoginController() *LoginController {
+	return &LoginController{
 		userRepo: repository.UserRepository{},
 	}
 }
 
-func (c *AuthController) Login(ctx *gin.Context) {
+func (c *LoginController) Login(ctx *gin.Context) {
 	var loginRequest models.LoginRequest
 	if err := ctx.ShouldBindJSON(&loginRequest); err != nil {
 		ctx.JSON(http.StatusBadRequest, models.Response{
 			Success: false,
 			Error:   "Invalid request body: " + err.Error(),
+		})
+		return
+	}
+
+	jwtSecret := middleware.GetJWTSecret()
+	if jwtSecret == "" {
+		ctx.JSON(http.StatusInternalServerError, models.Response{
+			Success: false,
+			Error:   "JWT_SECRET not configured, authentication cannot proceed",
 		})
 		return
 	}
@@ -64,13 +69,7 @@ func (c *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":   user.ID,
-		"role": user.Role,
-		"exp":  time.Now().Add(time.Hour * 24).Unix(),
-	})
-
-	tokenString, err := token.SignedString([]byte(jwtSecret))
+	tokenString, err := middleware.GenerateToken(user.ID, user.Role)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, models.Response{
 			Success: false,
