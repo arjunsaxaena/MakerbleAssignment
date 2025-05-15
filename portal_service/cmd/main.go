@@ -27,6 +27,7 @@ func main() {
 	router.Use(gin.Recovery())
 	router.Use(gin.Logger())
 
+	authController := controller.NewAuthController()
 	userController := controller.NewUserController()
 	userRoutes := router.Group("/api/users")
 	{
@@ -34,6 +35,8 @@ func main() {
 		userRoutes.GET("", userController.Get)
 		userRoutes.PATCH("", userController.Update)
 		userRoutes.DELETE("/:id", userController.Delete)
+
+		userRoutes.POST("/login", authController.Login)
 	}
 
 	server := &http.Server{
