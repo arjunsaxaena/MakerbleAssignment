@@ -13,16 +13,12 @@ import (
 var DB *sqlx.DB
 
 func Connect() {
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Printf("Warning: .env file not found, using environment variables: %v", err)
-	}
+	} // Didn't knew godotenv required relative path for .env
 
 	dsn := os.Getenv("DB_URL")
-	if dsn == "" {
-		dsn = "postgres://postgres:secret@localhost:5432/makerble?sslmode=disable"
-		log.Printf("DB_URL not set in environment, using default: %s", dsn)
-	}
 
 	DB, err = sqlx.Connect("postgres", dsn)
 	if err != nil {
